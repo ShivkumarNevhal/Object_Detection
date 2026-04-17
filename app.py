@@ -2,6 +2,7 @@ import streamlit as st
 from ultralytics import YOLO
 from PIL import Image
 import numpy as np
+import cv2
 
 # -------------------------------
 # Page Config
@@ -42,7 +43,7 @@ st.markdown("<h1>🌿 Leaf Detection AI System</h1>", unsafe_allow_html=True)
 # -------------------------------
 @st.cache_resource
 def load_model():
-    return YOLO("best.pt")
+    return YOLO("Main_model/run1/train2/weights/best.pt")
 
 model = load_model()
 
@@ -62,12 +63,10 @@ with col1:
     uploaded_file = st.file_uploader("Choose image", type=["jpg", "png"])
 
     if uploaded_file:
-        img = Image.open(uploaded_file)
-        st.image(img)
-        st.session_state["input_image"] = img
+        st.session_state["input_image"] = Image.open(uploaded_file)
 
     # -------------------------------
-    # Camera ON/OFF
+    # Camera + Capture (Stable Version)
     # -------------------------------
     st.subheader("📷 Camera")
 
@@ -77,9 +76,8 @@ with col1:
         camera_image = st.camera_input("Take a picture")
 
         if camera_image:
-            cam_img = Image.open(camera_image)
-            st.image(cam_img)
-            st.session_state["input_image"] = cam_img
+            st.session_state["input_image"] = Image.open(camera_image)
+            st.success("Image Captured ✅")
     else:
         st.info("Camera is OFF")
 
@@ -96,24 +94,46 @@ with col2:
     input_img = st.session_state.get("input_image", None)
 
     if input_img:
-        st.image(input_img, caption="Input Image")
 
         if st.button("🔍 Run Detection"):
+
+            # Convert + Resize (IMPORTANT)
             img_np = np.array(input_img)
+            img_np = cv2.resize(img_np, (640, 640))
 
-            results = model(img_np, conf=0.4)
+            # Detection with higher confidence
+            results = model(img_np, conf=0.6)
+
             result_img = results[0].plot()
+            result_img = cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB)
 
-            st.image(result_img, caption="Detected")
+            # -------------------------------
+            # SHOW ONLY 2 IMAGES
+            # -------------------------------
+            st.subheader("📊 Before vs After Detection")
 
+            colA, colB = st.columns(2)
+
+            with colA:
+                st.image(input_img, caption="Input Image")
+
+            with colB:
+                st.image(result_img, caption="Detected Image")
+
+            # -------------------------------
+            # Results
+            # -------------------------------
             st.subheader("Results")
 
-            if len(results[0].boxes) == 0:
-                st.warning("No objects detected")
-            else:
-                for box in results[0].boxes:
+            valid = False
+            for box in results[0].boxes:
+                conf = float(box.conf[0])
+                if conf > 0.6:
                     cls = int(box.cls[0])
-                    conf = float(box.conf[0])
                     st.write(f"{model.names[cls]} → {conf:.2f}")
+                    valid = True
+
+            if not valid:
+                st.warning("No confident detection")
 
     st.markdown('</div>', unsafe_allow_html=True)
