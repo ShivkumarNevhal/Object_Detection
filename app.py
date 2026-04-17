@@ -58,7 +58,7 @@ col1, col2 = st.columns(2)
 with col1:
     st.markdown('<div class="main-box">', unsafe_allow_html=True)
 
-    # Upload
+    # Upload Image
     st.subheader("📤 Upload Image")
     uploaded_file = st.file_uploader("Choose image", type=["jpg", "png"])
 
@@ -66,7 +66,7 @@ with col1:
         st.session_state["input_image"] = Image.open(uploaded_file)
 
     # -------------------------------
-    # Camera + Capture (Stable Version)
+    # Camera (Stable)
     # -------------------------------
     st.subheader("📷 Camera")
 
@@ -95,49 +95,50 @@ with col2:
 
     if input_img:
 
-       if st.button("🔍 Run Detection"):
+        if st.button("🔍 Run Detection"):
 
-         # Convert image (KEEP RGB)
-         img_np = np.array(input_img)
+            # Convert image (KEEP RGB)
+            img_np = np.array(input_img)
 
-        # Resize to model size (VERY IMPORTANT)
-        img_np = cv2.resize(img_np, (640, 640))
+            # Resize for better accuracy
+            img_np = cv2.resize(img_np, (640, 640))
 
-        # Run detection with higher confidence
-        results = model(img_np, conf=0.6)
- 
-        # Get plotted result
-        result_img = results[0].plot()
-        result_img = cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB)
+            # Run detection with higher confidence
+            results = model(img_np, conf=0.6)
 
-    # -------------------------------
-    # SHOW CLEAN OUTPUT
-    # -------------------------------
-        colA, colB = st.columns(2)
+            # Get result image
+            result_img = results[0].plot()
+            result_img = cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB)
 
-        with colA:
-           st.image(input_img, caption="Input Image")
+            # -------------------------------
+            # SHOW ONLY 2 IMAGES
+            # -------------------------------
+            st.subheader("📊 Before vs After Detection")
 
-        with colB:
-           st.image(result_img, caption="Detected Image")
+            colA, colB = st.columns(2)
 
-    # -------------------------------
-    # FILTER RESULTS (VERY IMPORTANT)
-    # -------------------------------
-        st.subheader("Results")
+            with colA:
+                st.image(input_img, caption="Input Image")
 
-        valid = False
+            with colB:
+                st.image(result_img, caption="Detected Image")
 
-        for box in results[0].boxes:
-            conf = float(box.conf[0])
+            # -------------------------------
+            # FILTER RESULTS
+            # -------------------------------
+            st.subheader("Results")
 
-        # Only show strong detections
-             if conf > 0.6:
-               cls = int(box.cls[0])
-               st.write(f"{model.names[cls]} → {conf:.2f}")
-               valid = True
+            valid = False
 
-        if not valid:
-             st.warning("No confident detection 🚫")
+            for box in results[0].boxes:
+                conf = float(box.conf[0])
+
+                if conf > 0.6:
+                    cls = int(box.cls[0])
+                    st.write(f"{model.names[cls]} → {conf:.2f}")
+                    valid = True
+
+            if not valid:
+                st.warning("No confident detection 🚫")
 
     st.markdown('</div>', unsafe_allow_html=True)
