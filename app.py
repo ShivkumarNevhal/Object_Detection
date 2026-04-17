@@ -2,7 +2,6 @@ import streamlit as st
 from ultralytics import YOLO
 from PIL import Image
 import numpy as np
-import cv2
 
 # -------------------------------
 # Page Config
@@ -53,7 +52,7 @@ model = load_model()
 col1, col2 = st.columns(2)
 
 # -------------------------------
-# LEFT SIDE (Upload + Live Camera)
+# LEFT SIDE (Upload + Camera)
 # -------------------------------
 with col1:
     st.markdown('<div class="main-box">', unsafe_allow_html=True)
@@ -67,44 +66,16 @@ with col1:
         st.image(img)
 
     # -------------------------------
-    # Live Camera + Capture
+    # Camera Input (Cloud Compatible)
     # -------------------------------
-    st.subheader("🎥 Live Camera + Capture")
+    st.subheader("📷 Capture from Camera")
 
-    start_cam = st.toggle("Start Camera")
-    FRAME_WINDOW = st.image([])
-    capture_btn = st.button("📸 Capture Frame")
+    camera_image = st.camera_input("Take a photo")
 
-    if start_cam:
-        cap = cv2.VideoCapture(0)
-
-        if not cap.isOpened():
-            st.error("Camera not accessible")
-        else:
-            while True:
-                ret, frame = cap.read()
-                if not ret:
-                    break
-
-                # YOLO live detection
-                results = model(frame, conf=0.4)
-                frame = results[0].plot()
-
-                frame = frame[:, :, ::-1]
-                FRAME_WINDOW.image(frame)
-
-                # Capture
-                if capture_btn:
-                    captured = frame.copy()
-                    st.session_state["camera_image"] = Image.fromarray(captured)
-                    st.success("Frame Captured ✅")
-                    break
-
-                # Stop if toggle OFF
-                if not start_cam:
-                    break
-
-            cap.release()
+    if camera_image:
+        cam_img = Image.open(camera_image)
+        st.image(cam_img)
+        st.session_state["camera_image"] = cam_img
 
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -129,7 +100,6 @@ with col2:
 
         if st.button("🔍 Run Detection"):
             img_np = np.array(input_img)
-            img_np = img_np[:, :, ::-1]
 
             results = model(img_np, conf=0.4)
 
