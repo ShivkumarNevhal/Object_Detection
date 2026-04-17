@@ -100,8 +100,8 @@ with col2:
             # -------------------------------
             # STANDARD INPUT PIPELINE
             # -------------------------------
-            input_img = input_img.convert("RGB")
             img_np = np.array(input_img)
+            img_np = img_np[:, :, ::-1]
 
             # Resize (important)
             img_np = cv2.resize(img_np, (640, 640))
