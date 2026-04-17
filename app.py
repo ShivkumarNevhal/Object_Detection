@@ -2,7 +2,6 @@ import streamlit as st
 from ultralytics import YOLO
 from PIL import Image
 import numpy as np
-from streamlit_webrtc import webrtc_streamer, VideoProcessorBase
 
 # -------------------------------
 # Page Config
@@ -53,64 +52,61 @@ model = load_model()
 col1, col2 = st.columns(2)
 
 # -------------------------------
-# YOLO Processor
-# -------------------------------
-class YOLOProcessor(VideoProcessorBase):
-    def recv(self, frame):
-        img = frame.to_ndarray(format="bgr24")
-        results = model(img, conf=0.4)
-        return results[0].plot()
-
-# -------------------------------
-# LEFT SIDE
+# LEFT SIDE (Input)
 # -------------------------------
 with col1:
     st.markdown('<div class="main-box">', unsafe_allow_html=True)
 
+    # Upload
     st.subheader("📤 Upload Image")
     uploaded_file = st.file_uploader("Choose image", type=["jpg", "png"])
 
     if uploaded_file:
         img = Image.open(uploaded_file)
         st.image(img)
-        st.session_state["upload_image"] = img
+        st.session_state["input_image"] = img
 
-    st.subheader("🎥 Live Detection")
+    # -------------------------------
+    # Camera ON/OFF
+    # -------------------------------
+    st.subheader("📷 Camera")
 
-    start_cam = st.toggle("Start / Stop Camera")
+    cam_on = st.toggle("Turn Camera ON / OFF")
 
-    if start_cam:
-        webrtc_streamer(
-            key="leaf",
-            video_processor_factory=YOLOProcessor,
-            media_stream_constraints={"video": True, "audio": False},
-        )
+    if cam_on:
+        camera_image = st.camera_input("Take a picture")
+
+        if camera_image:
+            cam_img = Image.open(camera_image)
+            st.image(cam_img)
+            st.session_state["input_image"] = cam_img
     else:
         st.info("Camera is OFF")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
 # -------------------------------
-# RIGHT SIDE
+# RIGHT SIDE (Detection)
 # -------------------------------
 with col2:
     st.markdown('<div class="main-box">', unsafe_allow_html=True)
 
     st.subheader("🧠 Detection Result")
 
-    input_img = None
-
-    if "upload_image" in st.session_state:
-        input_img = st.session_state["upload_image"]
+    input_img = st.session_state.get("input_image", None)
 
     if input_img:
-        st.image(input_img)
+        st.image(input_img, caption="Input Image")
 
         if st.button("🔍 Run Detection"):
             img_np = np.array(input_img)
-            results = model(img_np, conf=0.4)
 
-            st.image(results[0].plot())
+            results = model(img_np, conf=0.4)
+            result_img = results[0].plot()
+
+            st.image(result_img, caption="Detected")
+
+            st.subheader("Results")
 
             if len(results[0].boxes) == 0:
                 st.warning("No objects detected")
