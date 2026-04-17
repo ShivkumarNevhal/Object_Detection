@@ -9,3 +9,5 @@ pillow
 pyyaml
 tqdm
 streamlit
+streamlit-webrtc==0.47.7
+av==10.0.0
