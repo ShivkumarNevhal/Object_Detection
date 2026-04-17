@@ -15,7 +15,7 @@ st.set_page_config(
 )
 
 # -------------------------------
-# UI
+# UI Design
 # -------------------------------
 st.markdown("""
 <style>
@@ -54,7 +54,7 @@ model = load_model()
 col1, col2 = st.columns(2)
 
 # -------------------------------
-# YOLO Live Processor
+# YOLO Processor
 # -------------------------------
 class YOLOProcessor(VideoProcessorBase):
     def recv(self, frame):
@@ -64,12 +64,12 @@ class YOLOProcessor(VideoProcessorBase):
         return av.VideoFrame.from_ndarray(annotated, format="bgr24")
 
 # -------------------------------
-# LEFT SIDE (Upload + Live Camera)
+# LEFT SIDE
 # -------------------------------
 with col1:
     st.markdown('<div class="main-box">', unsafe_allow_html=True)
 
-    # Upload
+    # Upload Image
     st.subheader("📤 Upload Image")
     uploaded_file = st.file_uploader("Choose image", type=["jpg", "png"])
 
@@ -79,20 +79,25 @@ with col1:
         st.session_state["upload_image"] = img
 
     # -------------------------------
-    # Live Camera (REAL-TIME)
+    # Live Camera Toggle
     # -------------------------------
-    st.subheader("🎥 Live Detection Camera")
+    st.subheader("🎥 Live Detection")
 
-    ctx = webrtc_streamer(
-        key="leaf-detect",
-        video_processor_factory=YOLOProcessor,
-        media_stream_constraints={"video": True, "audio": False},
-    )
+    start_cam = st.toggle("Start / Stop Camera")
+
+    if start_cam:
+        webrtc_streamer(
+            key="leaf-detection",
+            video_processor_factory=YOLOProcessor,
+            media_stream_constraints={"video": True, "audio": False},
+        )
+    else:
+        st.info("Camera is OFF")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
 # -------------------------------
-# RIGHT SIDE (Detection Result)
+# RIGHT SIDE
 # -------------------------------
 with col2:
     st.markdown('<div class="main-box">', unsafe_allow_html=True)
@@ -109,10 +114,9 @@ with col2:
 
         if st.button("🔍 Run Detection"):
             img_np = np.array(input_img)
-
             results = model(img_np, conf=0.4)
-            result_img = results[0].plot()
 
+            result_img = results[0].plot()
             st.image(result_img, caption="Detected")
 
             st.subheader("Results")
