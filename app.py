@@ -95,45 +95,49 @@ with col2:
 
     if input_img:
 
-        if st.button("🔍 Run Detection"):
+       if st.button("🔍 Run Detection"):
 
-            # Convert + Resize (IMPORTANT)
-            img_np = np.array(input_img)
-            img_np = cv2.resize(img_np, (640, 640))
+         # Convert image (KEEP RGB)
+         img_np = np.array(input_img)
 
-            # Detection with higher confidence
-            results = model(img_np, conf=0.6)
+        # Resize to model size (VERY IMPORTANT)
+        img_np = cv2.resize(img_np, (640, 640))
 
-            result_img = results[0].plot()
-            result_img = cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB)
+        # Run detection with higher confidence
+        results = model(img_np, conf=0.6)
+ 
+        # Get plotted result
+        result_img = results[0].plot()
+        result_img = cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB)
 
-            # -------------------------------
-            # SHOW ONLY 2 IMAGES
-            # -------------------------------
-            st.subheader("📊 Before vs After Detection")
+    # -------------------------------
+    # SHOW CLEAN OUTPUT
+    # -------------------------------
+        colA, colB = st.columns(2)
 
-            colA, colB = st.columns(2)
+        with colA:
+           st.image(input_img, caption="Input Image")
 
-            with colA:
-                st.image(input_img, caption="Input Image")
+        with colB:
+           st.image(result_img, caption="Detected Image")
 
-            with colB:
-                st.image(result_img, caption="Detected Image")
+    # -------------------------------
+    # FILTER RESULTS (VERY IMPORTANT)
+    # -------------------------------
+        st.subheader("Results")
 
-            # -------------------------------
-            # Results
-            # -------------------------------
-            st.subheader("Results")
+        valid = False
 
-            valid = False
-            for box in results[0].boxes:
-                conf = float(box.conf[0])
-                if conf > 0.6:
-                    cls = int(box.cls[0])
-                    st.write(f"{model.names[cls]} → {conf:.2f}")
-                    valid = True
+        for box in results[0].boxes:
+            conf = float(box.conf[0])
 
-            if not valid:
-                st.warning("No confident detection")
+        # Only show strong detections
+             if conf > 0.6:
+               cls = int(box.cls[0])
+               st.write(f"{model.names[cls]} → {conf:.2f}")
+               valid = True
+
+        if not valid:
+             st.warning("No confident detection 🚫")
 
     st.markdown('</div>', unsafe_allow_html=True)
