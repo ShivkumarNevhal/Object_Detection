@@ -2,6 +2,8 @@ import streamlit as st
 from ultralytics import YOLO
 from PIL import Image
 import numpy as np
+import av
+from streamlit_webrtc import webrtc_streamer, VideoProcessorBase
 
 # -------------------------------
 # Page Config
@@ -52,7 +54,17 @@ model = load_model()
 col1, col2 = st.columns(2)
 
 # -------------------------------
-# LEFT SIDE (Upload + Camera)
+# YOLO Live Processor
+# -------------------------------
+class YOLOProcessor(VideoProcessorBase):
+    def recv(self, frame):
+        img = frame.to_ndarray(format="bgr24")
+        results = model(img, conf=0.4)
+        annotated = results[0].plot()
+        return av.VideoFrame.from_ndarray(annotated, format="bgr24")
+
+# -------------------------------
+# LEFT SIDE (Upload + Live Camera)
 # -------------------------------
 with col1:
     st.markdown('<div class="main-box">', unsafe_allow_html=True)
@@ -64,23 +76,23 @@ with col1:
     if uploaded_file:
         img = Image.open(uploaded_file)
         st.image(img)
+        st.session_state["upload_image"] = img
 
     # -------------------------------
-    # Camera Input (Cloud Compatible)
+    # Live Camera (REAL-TIME)
     # -------------------------------
-    st.subheader("📷 Capture from Camera")
+    st.subheader("🎥 Live Detection Camera")
 
-    camera_image = st.camera_input("Take a photo")
-
-    if camera_image:
-        cam_img = Image.open(camera_image)
-        st.image(cam_img)
-        st.session_state["camera_image"] = cam_img
+    ctx = webrtc_streamer(
+        key="leaf-detect",
+        video_processor_factory=YOLOProcessor,
+        media_stream_constraints={"video": True, "audio": False},
+    )
 
     st.markdown('</div>', unsafe_allow_html=True)
 
 # -------------------------------
-# RIGHT SIDE (Detection)
+# RIGHT SIDE (Detection Result)
 # -------------------------------
 with col2:
     st.markdown('<div class="main-box">', unsafe_allow_html=True)
@@ -89,11 +101,8 @@ with col2:
 
     input_img = None
 
-    if uploaded_file:
-        input_img = Image.open(uploaded_file)
-
-    elif "camera_image" in st.session_state:
-        input_img = st.session_state["camera_image"]
+    if "upload_image" in st.session_state:
+        input_img = st.session_state["upload_image"]
 
     if input_img:
         st.image(input_img, caption="Input Image")
@@ -102,8 +111,8 @@ with col2:
             img_np = np.array(input_img)
 
             results = model(img_np, conf=0.4)
-
             result_img = results[0].plot()
+
             st.image(result_img, caption="Detected")
 
             st.subheader("Results")
