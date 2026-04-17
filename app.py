@@ -43,7 +43,7 @@ st.markdown("<h1>🌿 Leaf Detection AI System</h1>", unsafe_allow_html=True)
 # -------------------------------
 @st.cache_resource
 def load_model():
-    return YOLO("Main_model/run1/train2/weights/best.pt")
+    return YOLO("best.pt")
 
 model = load_model()
 
