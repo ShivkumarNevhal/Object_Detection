@@ -1,62 +1,78 @@
-import streamlit as st
-from ultralytics import YOLO
-from PIL import Image
-import numpy as np
-import cv2
+# -------------------------------
+# RIGHT SIDE (Detection)
+# -------------------------------
+with col2:
+    st.markdown('<div class="main-box">', unsafe_allow_html=True)
 
-st.set_page_config(page_title="Leaf Detection 🌿", layout="centered")
-st.title("🌿 Leaf Detection System")
+    st.subheader("🧠 Detection Result")
 
-@st.cache_resource
-def load_model():
-    return YOLO("best.pt")
+    input_img = None
 
-model = load_model()
+    # Unified input source
+    if uploaded_file:
+        input_img = Image.open(uploaded_file)
 
-uploaded_file = st.file_uploader("Upload Leaf Image", type=["jpg", "png"])
+    elif "camera_image" in st.session_state:
+        input_img = st.session_state["camera_image"]
 
-if uploaded_file:
-    input_img = Image.open(uploaded_file)
-    st.image(input_img, caption="Input Image", use_column_width=True)
+    if input_img:
 
-    if st.button("🔍 Detect"):
+        if st.button("🔍 Run Detection"):
 
-        img_np = np.array(input_img)
+            # -------------------------------
+            # ✅ STANDARD INPUT PIPELINE
+            # -------------------------------
 
-        # Resize (critical)
-        img_np = cv2.resize(img_np, (640, 640))
+            # Convert to RGB (safety)
+            input_img = input_img.convert("RGB")
 
-        # Normalize lighting (IMPORTANT FIX)
-        img_np = cv2.cvtColor(img_np, cv2.COLOR_RGB2LAB)
-        l, a, b = cv2.split(img_np)
-        l = cv2.equalizeHist(l)
-        img_np = cv2.merge((l, a, b))
-        img_np = cv2.cvtColor(img_np, cv2.COLOR_LAB2RGB)
+            # Convert to numpy
+            img_np = np.array(input_img)
 
-        # Run model with high confidence
-        results = model(img_np, conf=0.7)
+            # Resize (VERY IMPORTANT)
+            img_np = cv2.resize(img_np, (640, 640))
 
-        result_img = results[0].plot()
-        result_img = cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB)
+            # Optional: reduce noise (helps camera input)
+            img_np = cv2.GaussianBlur(img_np, (5, 5), 0)
 
-        st.image(result_img, caption="Detection Result")
+            # -------------------------------
+            # Run Model
+            # -------------------------------
+            results = model(img_np, conf=0.6)
 
-        # -------------------------------
-        # TAKE ONLY BEST PREDICTION
-        # -------------------------------
-        st.subheader("Prediction")
+            # Convert result for display
+            result_img = results[0].plot()
+            result_img = cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB)
 
-        if len(results[0].boxes) == 0:
-            st.error("No leaf detected ❌")
+            # -------------------------------
+            # SHOW INPUT + OUTPUT
+            # -------------------------------
+            colA, colB = st.columns(2)
 
-        else:
-            # Get highest confidence box
-            best_box = max(results[0].boxes, key=lambda x: float(x.conf[0]))
+            with colA:
+                st.image(input_img, caption="Input Image")
 
-            conf = float(best_box.conf[0])
-            cls = int(best_box.cls[0])
+            with colB:
+                st.image(result_img, caption="Detected Image")
 
-            if conf > 0.7:
-                st.success(f"{model.names[cls]} ({conf:.2f})")
+            # -------------------------------
+            # CLEAN RESULTS (NO HALLUCINATION)
+            # -------------------------------
+            st.subheader("Results")
+
+            if len(results[0].boxes) == 0:
+                st.warning("No objects detected 🚫")
+
             else:
-                st.warning("Prediction not confident ⚠️")
+                # Only show best prediction
+                best_box = max(results[0].boxes, key=lambda x: float(x.conf[0]))
+
+                conf = float(best_box.conf[0])
+                cls = int(best_box.cls[0])
+
+                if conf > 0.6:
+                    st.success(f"{model.names[cls]} → {conf:.2f}")
+                else:
+                    st.warning("Low confidence detection ⚠️")
+
+    st.markdown('</div>', unsafe_allow_html=True)
