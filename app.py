@@ -2,7 +2,6 @@ import streamlit as st
 from ultralytics import YOLO
 from PIL import Image
 import numpy as np
-import av
 from streamlit_webrtc import webrtc_streamer, VideoProcessorBase
 
 # -------------------------------
@@ -15,7 +14,7 @@ st.set_page_config(
 )
 
 # -------------------------------
-# UI Design
+# UI
 # -------------------------------
 st.markdown("""
 <style>
@@ -60,8 +59,7 @@ class YOLOProcessor(VideoProcessorBase):
     def recv(self, frame):
         img = frame.to_ndarray(format="bgr24")
         results = model(img, conf=0.4)
-        annotated = results[0].plot()
-        return av.VideoFrame.from_ndarray(annotated, format="bgr24")
+        return results[0].plot()
 
 # -------------------------------
 # LEFT SIDE
@@ -69,7 +67,6 @@ class YOLOProcessor(VideoProcessorBase):
 with col1:
     st.markdown('<div class="main-box">', unsafe_allow_html=True)
 
-    # Upload Image
     st.subheader("📤 Upload Image")
     uploaded_file = st.file_uploader("Choose image", type=["jpg", "png"])
 
@@ -78,16 +75,13 @@ with col1:
         st.image(img)
         st.session_state["upload_image"] = img
 
-    # -------------------------------
-    # Live Camera Toggle
-    # -------------------------------
     st.subheader("🎥 Live Detection")
 
     start_cam = st.toggle("Start / Stop Camera")
 
     if start_cam:
         webrtc_streamer(
-            key="leaf-detection",
+            key="leaf",
             video_processor_factory=YOLOProcessor,
             media_stream_constraints={"video": True, "audio": False},
         )
@@ -110,16 +104,13 @@ with col2:
         input_img = st.session_state["upload_image"]
 
     if input_img:
-        st.image(input_img, caption="Input Image")
+        st.image(input_img)
 
         if st.button("🔍 Run Detection"):
             img_np = np.array(input_img)
             results = model(img_np, conf=0.4)
 
-            result_img = results[0].plot()
-            st.image(result_img, caption="Detected")
-
-            st.subheader("Results")
+            st.image(results[0].plot())
 
             if len(results[0].boxes) == 0:
                 st.warning("No objects detected")
