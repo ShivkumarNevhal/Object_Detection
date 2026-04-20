@@ -23,7 +23,7 @@ st.markdown("""
 <style>
 .stApp {
     background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.5)),
-                url("https://www.shaip.com/wp-content/uploads/2022/01/Blog_Most-Sought-Open-Source-Datasets-for-Computer-Vision.jpg");
+                url("https://t3.ftcdn.net/jpg/18/06/73/74/360_F_1806737412_QMA5N6s4Bo4TrCeljzb9diM2M3KxB2fl.jpg");
     background-size: cover;
     background-position: center;
 }
