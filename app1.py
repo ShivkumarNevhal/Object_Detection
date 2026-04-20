@@ -1,4 +1,5 @@
 import numpy as np
+import cv2
 print("NumPy version:", np.__version__)
 print("CV2 loaded successfully")
 import streamlit as st
@@ -44,7 +45,7 @@ st.markdown("<h1>🌿 Leaf Detection AI System</h1>", unsafe_allow_html=True)
 # -------------------------------
 @st.cache_resource
 def load_model():
-    return YOLO("best.pt")  # keep best.pt in root folder
+    return YOLO("best.pt")
 
 model = load_model()
 
@@ -70,7 +71,7 @@ deficiency_info = {
     },
     "Healthy": {
         "symptoms": "Leaves are green and healthy with no deficiency signs.",
-        "treatment": "No treatment needed. Maintain proper watering and nutrients."
+        "treatment": "No treatment needed. Maintain proper care."
     }
 }
 
@@ -85,18 +86,13 @@ col1, col2 = st.columns(2)
 with col1:
     st.markdown('<div class="main-box">', unsafe_allow_html=True)
 
-    # Upload Image
     st.subheader("📤 Upload Image")
     uploaded_file = st.file_uploader("Choose image", type=["jpg", "png"])
 
     if uploaded_file:
         st.session_state["input_image"] = Image.open(uploaded_file)
 
-    # -------------------------------
-    # Camera (Stable)
-    # -------------------------------
     st.subheader("📷 Camera")
-
     cam_on = st.toggle("Turn Camera ON / OFF")
 
     if cam_on:
@@ -130,11 +126,8 @@ with col2:
             img_np = np.array(input_img)
             img_np = img_np[:, :, ::-1]
 
-            # Resize (important)
-            input_img = input_img.resize((640, 640))
-            
-            # Reduce noise
-            img_np = np.array(input_img)
+            img_np = cv2.resize(img_np, (640, 640))
+            img_np = cv2.GaussianBlur(img_np, (5, 5), 0)
 
             # -------------------------------
             # Run Model
@@ -142,7 +135,7 @@ with col2:
             results = model(img_np, conf=0.6)
 
             result_img = results[0].plot()
-            result_img = result_img[..., ::-1]
+            result_img = cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB)
 
             # -------------------------------
             # Show Images
@@ -178,7 +171,7 @@ with col2:
                     st.success(f"{detected_class} → {conf:.2f}")
 
                     # -------------------------------
-                    # Symptoms & Treatment Feature
+                    # Symptoms & Treatment
                     # -------------------------------
                     info = deficiency_info.get(detected_class, None)
 
