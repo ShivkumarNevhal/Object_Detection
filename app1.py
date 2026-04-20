@@ -1,5 +1,7 @@
 import numpy as np
 import cv2
+print("NumPy version:", np.__version__)
+print("CV2 loaded successfully")
 import streamlit as st
 from ultralytics import YOLO
 from PIL import Image
@@ -14,7 +16,7 @@ st.set_page_config(
 )
 
 # -------------------------------
-# UI Styling
+# UI
 # -------------------------------
 st.markdown("""
 <style>
@@ -43,12 +45,12 @@ st.markdown("<h1>🌿 Leaf Detection AI System</h1>", unsafe_allow_html=True)
 # -------------------------------
 @st.cache_resource
 def load_model():
-    return YOLO("best.pt")
+    return YOLO("best.pt")  # keep best.pt in root folder
 
 model = load_model()
 
 # -------------------------------
-# Deficiency Info (Symptoms + Treatment)
+# Deficiency Info
 # -------------------------------
 deficiency_info = {
     "Nitrogen Deficiency": {
@@ -84,17 +86,23 @@ col1, col2 = st.columns(2)
 with col1:
     st.markdown('<div class="main-box">', unsafe_allow_html=True)
 
+    # Upload Image
     st.subheader("📤 Upload Image")
     uploaded_file = st.file_uploader("Choose image", type=["jpg", "png"])
 
     if uploaded_file:
         st.session_state["input_image"] = Image.open(uploaded_file)
 
+    # -------------------------------
+    # Camera (Stable)
+    # -------------------------------
     st.subheader("📷 Camera")
+
     cam_on = st.toggle("Turn Camera ON / OFF")
 
     if cam_on:
         camera_image = st.camera_input("Take a picture")
+
         if camera_image:
             st.session_state["input_image"] = Image.open(camera_image)
             st.success("Image Captured ✅")
@@ -118,11 +126,15 @@ with col2:
         if st.button("🔍 Run Detection"):
 
             # -------------------------------
-            # Image Processing
+            # STANDARD INPUT PIPELINE
             # -------------------------------
             img_np = np.array(input_img)
             img_np = img_np[:, :, ::-1]
+
+            # Resize (important)
             img_np = cv2.resize(img_np, (640, 640))
+
+            # Reduce noise
             img_np = cv2.GaussianBlur(img_np, (5, 5), 0)
 
             # -------------------------------
@@ -149,7 +161,7 @@ with col2:
             # -------------------------------
             # Show Results
             # -------------------------------
-            st.subheader("📋 Results")
+            st.subheader("Results")
 
             boxes = results[0].boxes
 
@@ -167,7 +179,7 @@ with col2:
                     st.success(f"{detected_class} → {conf:.2f}")
 
                     # -------------------------------
-                    # Show Symptoms & Treatment
+                    # Symptoms & Treatment Feature
                     # -------------------------------
                     info = deficiency_info.get(detected_class, None)
 
