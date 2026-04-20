@@ -42,7 +42,7 @@ label, p { color: #eee !important; }
 st.markdown("<h1>🌿 AI-Powered Palm Leaf Nutrient Deficiency Detection System</h1>", unsafe_allow_html=True)
 
 # -------------------------------
-# Language Selection (NEW)
+# 🌐 Language Selector (NEW)
 # -------------------------------
 language = st.selectbox(
     "🌐 Select Language",
@@ -64,7 +64,7 @@ def load_model():
 model = load_model()
 
 # -------------------------------
-# Deficiency Info (FIXED STRUCTURE)
+# Deficiency Info (FIXED)
 # -------------------------------
 deficiency_info = {
     "nitrogen": {
@@ -75,99 +75,65 @@ deficiency_info = {
         },
         "treatment": {
             "en": """### 🌿 Treatment Steps
-- Apply urea or compost to improve nitrogen levels in the soil.
-- Use a 1–2% urea foliar spray.
-- Spray evenly on leaves.
-- Apply during early morning or late evening.
-- Repeat every 10–15 days if needed.
-- Add compost for long-term fertility.
-- Ensure proper irrigation.
-- Avoid overuse of urea.
+- Apply urea or compost.
+- Use 1–2% urea spray.
+- Spray evenly.
+- Morning/evening use.
+- Repeat every 10–15 days.
 """,
             "mr": """### 🌿 उपचार पायऱ्या
-- मातीतील नायट्रोजन वाढवण्यासाठी युरिया वापरा.
+- युरिया किंवा कंपोस्ट वापरा.
 - 1–2% फवारणी करा.
-- पानांवर समप्रमाणात फवारणी करा.
-- सकाळी किंवा संध्याकाळी वापरा.
-- 10–15 दिवसांनी पुन्हा करा.
-- सेंद्रिय खत वापरा.
-- पाणी द्या.
-- अति वापर टाळा.
+- सकाळी/संध्याकाळी वापरा.
 """,
             "te": """### 🌿 చికిత్స దశలు
-- నేలలో నైట్రోజన్ పెంచడానికి యూరియా ఉపయోగించండి.
+- యూరియా ఉపయోగించండి.
 - 1–2% స్ప్రే చేయండి.
-- ఆకులపై సమానంగా స్ప్రే చేయండి.
-- ఉదయం/సాయంత్రం ఉపయోగించండి.
-- 10–15 రోజులకు మళ్లీ చేయండి.
-- కంపోస్ట్ జోడించండి.
-- నీరు ఇవ్వండి.
-- అధిక వినియోగం నివారించండి.
+- ఉదయం/సాయంత్రం చేయండి.
 """
         }
     },
 
     "boron": {
         "symptoms": {
-            "en": "Deformed leaves, brittle tissues, poor growth.",
-            "mr": "वाकडी पाने, नाजूक ऊती, वाढ कमी होणे",
-            "te": "వంకరగా ఉన్న ఆకులు, బలహీన కణజాలం, వృద్ధి తగ్గడం"
+            "en": "Deformed leaves, poor growth.",
+            "mr": "वाकडी पाने, वाढ कमी",
+            "te": "వంకర ఆకులు, వృద్ధి తగ్గడం"
         },
         "treatment": {
             "en": """### 🌿 Treatment Steps
-- Apply borax in small quantity.
-- Use 0.1–0.2% boric acid spray.
-- Spray evenly on leaves.
-- Apply during morning/evening.
-- Repeat if needed.
-- Avoid overuse.
+- Apply borax.
+- Use 0.1–0.2% spray.
 """,
             "mr": """### 🌿 उपचार पायऱ्या
-- कमी प्रमाणात बोरेक्स वापरा.
+- बोरेक्स वापरा.
 - 0.1–0.2% फवारणी करा.
-- पानांवर स्प्रे करा.
-- सकाळी/संध्याकाळी करा.
-- पुन्हा करा.
-- अति वापर टाळा.
 """,
             "te": """### 🌿 చికిత్స దశలు
-- తక్కువ పరిమాణంలో బోరాక్స్ ఉపయోగించండి.
+- బోరాక్స్ ఉపయోగించండి.
 - 0.1–0.2% స్ప్రే చేయండి.
-- ఆకులపై స్ప్రే చేయండి.
-- ఉదయం/సాయంత్రం చేయండి.
-- మళ్లీ చేయండి.
-- అధిక వినియోగం నివారించండి.
 """
         }
     },
 
     "kalium": {
         "symptoms": {
-            "en": "Yellow/brown edges, weak stems.",
-            "mr": "पानांच्या कडा पिवळ्या, खोड कमकुवत",
-            "te": "ఆకుల అంచులు పసుపు, కాండం బలహీనంగా"
+            "en": "Leaf edges yellow/brown.",
+            "mr": "पानांच्या कडा पिवळ्या",
+            "te": "ఆకుల అంచులు పసుపు"
         },
         "treatment": {
             "en": """### 🌿 Treatment Steps
-- Apply potash fertilizer.
-- Use wood ash if needed.
-- Mix in soil.
-- Water properly.
-- Avoid excess.
+- Apply potash.
+- Use wood ash.
 """,
             "mr": """### 🌿 उपचार पायऱ्या
-- पोटॅश खत वापरा.
-- लाकडाची राख वापरा.
-- मातीमध्ये मिसळा.
-- पाणी द्या.
-- अति वापर टाळा.
+- पोटॅश वापरा.
+- राख वापरा.
 """,
             "te": """### 🌿 చికిత్స దశలు
-- పొటాష్ ఎరువు ఉపయోగించండి.
-- చెక్క బూడిద ఉపయోగించండి.
-- నేలలో కలపండి.
-- నీరు పోయండి.
-- అధిక వినియోగం నివారించండి.
+- పొటాష్ ఉపయోగించండి.
+- బూడిద ఉపయోగించండి.
 """
         }
     },
@@ -176,49 +142,31 @@ deficiency_info = {
         "symptoms": {
             "en": "Yellowing between veins.",
             "mr": "शिरांदरम्यान पिवळेपणा",
-            "te": "నరాల మధ్య పసుపు రంగు"
+            "te": "నరాల మధ్య పసుపు"
         },
         "treatment": {
             "en": """### 🌿 Treatment Steps
-- Apply Epsom salt spray (1–2%).
-- Mix in water.
-- Spray evenly.
-- Repeat every 10–15 days.
+- Apply Epsom salt spray.
 """,
             "mr": """### 🌿 उपचार पायऱ्या
-- एप्सम सॉल्ट फवारणी करा.
-- पाण्यात मिसळा.
-- स्प्रे करा.
-- पुन्हा करा.
+- एप्सम सॉल्ट वापरा.
 """,
             "te": """### 🌿 చికిత్స దశలు
-- ఎప్సమ్ సాల్ట్ స్ప్రే చేయండి.
-- నీటిలో కలపండి.
-- స్ప్రే చేయండి.
-- మళ్లీ చేయండి.
+- ఎప్సమ్ సాల్ట్ ఉపయోగించండి.
 """
         }
     },
 
     "healthy": {
         "symptoms": {
-            "en": "Healthy green leaves.",
-            "mr": "निरोगी हिरवी पाने",
-            "te": "ఆరోగ్యకరమైన పచ్చని ఆకులు"
+            "en": "Healthy leaves.",
+            "mr": "निरोगी पाने",
+            "te": "ఆరోగ్యకరమైన ఆకులు"
         },
         "treatment": {
-            "en": """### 🌿 Healthy Plant
-- No treatment needed.
-- Maintain care.
-""",
-            "mr": """### 🌿 निरोगी वनस्पती
-- उपचार गरज नाही.
-- काळजी घ्या.
-""",
-            "te": """### 🌿 ఆరోగ్యకరమైన మొక్క
-- చికిత్స అవసరం లేదు.
-- సంరక్షణ చేయండి.
-"""
+            "en": "No treatment needed.",
+            "mr": "उपचार गरज नाही.",
+            "te": "చికిత్స అవసరం లేదు."
         }
     }
 }
@@ -228,44 +176,97 @@ deficiency_info = {
 # -------------------------------
 col1, col2 = st.columns(2)
 
-# LEFT SIDE
+# -------------------------------
+# LEFT SIDE (Input)
+# -------------------------------
 with col1:
     st.markdown('<div class="main-box">', unsafe_allow_html=True)
 
-    uploaded_file = st.file_uploader("Upload Image", type=["jpg", "png"])
+    st.subheader("📤 Upload Image")
+    uploaded_file = st.file_uploader("Choose image", type=["jpg", "png"])
+
     if uploaded_file:
         st.session_state["input_image"] = Image.open(uploaded_file)
 
+    st.subheader("📷 Camera")
+    cam_on = st.toggle("Turn Camera ON / OFF")
+
+    if cam_on:
+        camera_image = st.camera_input("Take a picture")
+
+        if camera_image:
+            st.session_state["input_image"] = Image.open(camera_image)
+            st.success("Image Captured ✅")
+    else:
+        st.info("Camera is OFF")
+
     st.markdown('</div>', unsafe_allow_html=True)
 
-# RIGHT SIDE
+# -------------------------------
+# RIGHT SIDE (Detection)
+# -------------------------------
 with col2:
     st.markdown('<div class="main-box">', unsafe_allow_html=True)
 
+    st.subheader("🧠 Detection Result")
+
     input_img = st.session_state.get("input_image", None)
 
-    if input_img:
-        if st.button("Run Detection"):
+    if input_img is not None:
+
+        if st.button("🔍 Run Detection"):
 
             img_np = np.array(input_img)
+            img_np = img_np[:, :, ::-1]
             img_np = cv2.resize(img_np, (640, 640))
+            img_np = cv2.GaussianBlur(img_np, (5, 5), 0)
 
-            results = model(img_np)
+            results = model(img_np, conf=0.6)
+
+            result_img = results[0].plot()
+            result_img = cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB)
+
+            st.subheader("📊 Before vs After Detection")
+
+            colA, colB = st.columns(2)
+
+            with colA:
+                st.image(input_img, caption="Input Image")
+
+            with colB:
+                st.image(result_img, caption="Detected Image")
+
+            st.subheader("Results")
+
             boxes = results[0].boxes
 
-            if boxes:
-                cls = int(boxes[0].cls[0])
-                detected_class = model.names[cls]
+            if boxes is None or len(boxes) == 0:
+                st.warning("No objects detected 🚫")
+            else:
+                best_box = max(boxes, key=lambda x: float(x.conf[0]))
 
-                st.success(detected_class)
+                conf = float(best_box.conf[0])
+                cls = int(best_box.cls[0])
 
-                info = deficiency_info.get(detected_class)
+                if conf > 0.6:
+                    detected_class = model.names[cls]
 
-                if info:
-                    st.markdown("### 🌿 Symptoms")
-                    st.write(info["symptoms"].get(language))
+                    st.success(f"{detected_class} → {conf:.2f}")
 
-                    st.markdown("### 💊 Treatment")
-                    st.markdown(info["treatment"].get(language))
+                    info = deficiency_info.get(detected_class)
+
+                    if info:
+                        st.markdown("### 🌿 Symptoms")
+                        st.write(info["symptoms"].get(language, info["symptoms"]["en"]))
+
+                        st.markdown("### 💊 Treatment")
+                        st.markdown(info["treatment"].get(language, info["treatment"]["en"]))
+                    else:
+                        st.info("No additional information available.")
+                else:
+                    st.warning("Low confidence detection ⚠️")
+
+    else:
+        st.info("Upload or capture an image first 👆")
 
     st.markdown('</div>', unsafe_allow_html=True)
