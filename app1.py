@@ -349,7 +349,19 @@ with col2:
                 else:
                     st.warning("Low confidence detection ⚠️")
 
-    else:
+     else:
         st.info("Upload or capture an image first 👆")
+
+    # -------------------------------
+    # ⚠️ Disclaimer (ADD HERE)
+    # -------------------------------
+    st.markdown("---")
+
+    if language == "en":
+        st.caption("⚠️ This model may make mistakes. Please verify important information.")
+    elif language == "mr":
+        st.caption("⚠️ हे मॉडेल चुका करू शकते. कृपया महत्त्वाची माहिती तपासा.")
+    elif language == "te":
+        st.caption("⚠️ ఈ మోడల్ తప్పులు చేయవచ్చు. ముఖ్యమైన సమాచారాన్ని దయచేసి ధృవీకరించండి.")
 
     st.markdown('</div>', unsafe_allow_html=True)
