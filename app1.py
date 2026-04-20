@@ -34,7 +34,7 @@ st.markdown("""
     border-radius: 20px;
 }
 h1 { color: #FFFFFF; text-align: center; }
-h2, h3 { color: #c8e6c9; }
+h2, h3 { color: #FFFFFF; }
 label, p { color: #eee !important; }
 </style>
 """, unsafe_allow_html=True)
