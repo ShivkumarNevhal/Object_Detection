@@ -53,23 +53,23 @@ model = load_model()
 # Deficiency Info
 # -------------------------------
 deficiency_info = {
-    "Nitrogen Deficiency": {
+    "nitrogen": {
         "symptoms": "Yellowing of older leaves, slow growth.",
         "treatment": "Apply urea or compost. Use 1-2% urea foliar spray."
     },
-    "Boron Deficiency": {
+    "boron": {
         "symptoms": "Deformed leaves, brittle tissues, poor growth.",
         "treatment": "Apply borax in small quantity or 0.1–0.2% boric acid spray."
     },
-    "Potassium Deficiency": {
+    "kalium": {
         "symptoms": "Yellow/brown leaf edges (leaf burn), weak stems.",
         "treatment": "Use muriate of potash (KCl) or wood ash."
     },
-    "Magnesium Deficiency": {
+    "magnesium": {
         "symptoms": "Yellowing between veins (interveinal chlorosis) in older leaves.",
         "treatment": "Apply magnesium sulfate (Epsom salt) spray (1–2%)."
     },
-    "Healthy": {
+    "healthy": {
         "symptoms": "Leaves are green and healthy with no deficiency signs.",
         "treatment": "No treatment needed. Maintain proper care."
     }
