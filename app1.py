@@ -33,7 +33,7 @@ st.markdown("""
     padding: 25px;
     border-radius: 20px;
 }
-h1 { color: #a5d6a7; text-align: center; }
+h1 { color: #FFFFFF; text-align: center; }
 h2, h3 { color: #c8e6c9; }
 label, p { color: #eee !important; }
 </style>
