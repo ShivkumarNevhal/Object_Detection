@@ -349,7 +349,7 @@ with col2:
                 else:
                     st.warning("Low confidence detection ⚠️")
 
-     else:
+    else:
         st.info("Upload or capture an image first 👆")
 
     # -------------------------------
