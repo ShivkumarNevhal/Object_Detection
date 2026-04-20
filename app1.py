@@ -1,5 +1,4 @@
 import numpy as np
-import cv2
 print("NumPy version:", np.__version__)
 print("CV2 loaded successfully")
 import streamlit as st
@@ -132,10 +131,10 @@ with col2:
             img_np = img_np[:, :, ::-1]
 
             # Resize (important)
-            img_np = cv2.resize(img_np, (640, 640))
-
+            input_img = input_img.resize((640, 640))
+            
             # Reduce noise
-            img_np = cv2.GaussianBlur(img_np, (5, 5), 0)
+            img_np = np.array(input_img)
 
             # -------------------------------
             # Run Model
@@ -143,7 +142,7 @@ with col2:
             results = model(img_np, conf=0.6)
 
             result_img = results[0].plot()
-            result_img = cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB)
+            result_img = result_img[..., ::-1]
 
             # -------------------------------
             # Show Images
