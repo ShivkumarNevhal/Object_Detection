@@ -67,106 +67,189 @@ model = load_model()
 # Deficiency Info (FIXED)
 # -------------------------------
 deficiency_info = {
+
     "nitrogen": {
         "symptoms": {
-            "en": "Yellowing of older leaves, slow growth.",
-            "mr": "जुन्या पानांचे पिवळे पडणे, वाढ मंद होणे",
-            "te": "పాత ఆకులు పసుపు రంగులో మారడం, వృద్ధి నెమ్మదిగా ఉండడం"
+            "en": "Yellowing of older leaves, slow growth, reduced leaf size.",
+            "mr": "जुन्या पानांचे पिवळे पडणे, वाढ मंद होणे, पानांचा आकार कमी होणे",
+            "te": "పాత ఆకులు పసుపు రంగులో మారడం, వృద్ధి నెమ్మదిగా ఉండడం, ఆకుల పరిమాణం తగ్గడం"
         },
         "treatment": {
             "en": """### 🌿 Treatment Steps
-- Apply urea or compost.
-- Use 1–2% urea spray.
-- Spray evenly.
-- Morning/evening use.
-- Repeat every 10–15 days.
+- Apply urea or compost to improve nitrogen levels in the soil.
+- Use 1–2% urea foliar spray (10–20 g per liter of water) for quick recovery.
+- Spray evenly on both sides of leaves.
+- Apply during early morning or late evening to avoid leaf burn.
+- Repeat every 10–15 days if symptoms persist.
+- Add organic manure to improve long-term soil fertility.
+- Ensure proper irrigation after fertilizer application.
+- Avoid excessive urea use to prevent soil imbalance.
 """,
             "mr": """### 🌿 उपचार पायऱ्या
-- युरिया किंवा कंपोस्ट वापरा.
-- 1–2% फवारणी करा.
-- सकाळी/संध्याकाळी वापरा.
+- मातीतील नायट्रोजन वाढवण्यासाठी युरिया किंवा कंपोस्ट वापरा.
+- जलद परिणामांसाठी 1–2% युरिया फवारणी करा.
+- पानांच्या दोन्ही बाजूंवर फवारणी करा.
+- सकाळी किंवा संध्याकाळी फवारणी करा.
+- 10–15 दिवसांनी पुन्हा करा.
+- सेंद्रिय खत वापरा.
+- योग्य प्रमाणात पाणी द्या.
+- अति वापर टाळा.
 """,
             "te": """### 🌿 చికిత్స దశలు
-- యూరియా ఉపయోగించండి.
-- 1–2% స్ప్రే చేయండి.
-- ఉదయం/సాయంత్రం చేయండి.
+- నేలలో నైట్రోజన్ పెంచడానికి యూరియా లేదా కంపోస్ట్ ఉపయోగించండి.
+- త్వరిత ఫలితాల కోసం 1–2% యూరియా స్ప్రే చేయండి.
+- ఆకుల రెండు వైపులా స్ప్రే చేయండి.
+- ఉదయం లేదా సాయంత్రం చేయండి.
+- 10–15 రోజులకు మళ్లీ చేయండి.
+- ఆర్గానిక్ ఎరువు జోడించండి.
+- సరైన నీరు ఇవ్వండి.
+- అధిక వినియోగం నివారించండి.
 """
         }
     },
 
     "boron": {
         "symptoms": {
-            "en": "Deformed leaves, poor growth.",
-            "mr": "वाकडी पाने, वाढ कमी",
-            "te": "వంకర ఆకులు, వృద్ధి తగ్గడం"
+            "en": "Deformed leaves, brittle tissues, poor root and shoot growth.",
+            "mr": "वाकडी पाने, नाजूक ऊती, मुळांची व वाढ कमी",
+            "te": "వంకర ఆకులు, బలహీన కణజాలం, వేర్లు మరియు పెరుగుదల తగ్గడం"
         },
         "treatment": {
             "en": """### 🌿 Treatment Steps
-- Apply borax.
-- Use 0.1–0.2% spray.
+- Apply borax in small quantity to soil (very low dose required).
+- Use 0.1–0.2% boric acid foliar spray (1–2 g per liter of water).
+- Spray evenly on leaves.
+- Apply during cool hours (morning/evening).
+- Repeat every 10–15 days if needed.
+- Avoid overapplication as boron toxicity can damage plants.
 """,
             "mr": """### 🌿 उपचार पायऱ्या
-- बोरेक्स वापरा.
-- 0.1–0.2% फवारणी करा.
+- कमी प्रमाणात बोरेक्स वापरा.
+- 0.1–0.2% बोरिक अॅसिड फवारणी करा.
+- पानांवर समप्रमाणात फवारणी करा.
+- सकाळी/संध्याकाळी करा.
+- 10–15 दिवसांनी पुन्हा करा.
+- अति वापर टाळा.
 """,
             "te": """### 🌿 చికిత్స దశలు
-- బోరాక్స్ ఉపయోగించండి.
-- 0.1–0.2% స్ప్రే చేయండి.
+- తక్కువ పరిమాణంలో బోరాక్స్ ఉపయోగించండి.
+- 0.1–0.2% బోరిక్ ఆమ్ల స్ప్రే చేయండి.
+- ఆకులపై సమానంగా స్ప్రే చేయండి.
+- ఉదయం/సాయంత్రం చేయండి.
+- 10–15 రోజులకు మళ్లీ చేయండి.
+- అధిక వినియోగం నివారించండి.
 """
         }
     },
 
     "kalium": {
         "symptoms": {
-            "en": "Leaf edges yellow/brown.",
-            "mr": "पानांच्या कडा पिवळ्या",
-            "te": "ఆకుల అంచులు పసుపు"
+            "en": "Yellow/brown leaf edges (leaf burn), weak stems, reduced resistance to stress.",
+            "mr": "पानांच्या कडा पिवळ्या/तपकिरी, खोड कमकुवत, ताण सहनशक्ती कमी",
+            "te": "ఆకుల అంచులు పసుపు/గోధుమ, కాండం బలహీనంగా, ఒత్తిడి నిరోధకత తగ్గడం"
         },
         "treatment": {
             "en": """### 🌿 Treatment Steps
-- Apply potash.
-- Use wood ash.
+- Apply muriate of potash (KCl) to soil to increase potassium levels.
+- Use wood ash as a natural potassium source.
+- Mix fertilizer properly into soil near plant roots.
+- Water immediately after application.
+- Avoid direct contact with roots.
+- Repeat as required depending on deficiency.
+- Do not overapply as excess potassium affects nutrient balance.
 """,
             "mr": """### 🌿 उपचार पायऱ्या
-- पोटॅश वापरा.
-- राख वापरा.
+- मातीमध्ये पोटॅश (KCl) वापरा.
+- पर्याय म्हणून राख वापरा.
+- मातीमध्ये चांगले मिसळा.
+- लगेच पाणी द्या.
+- मुळांशी थेट संपर्क टाळा.
+- गरजेनुसार पुन्हा करा.
+- अति वापर टाळा.
 """,
             "te": """### 🌿 చికిత్స దశలు
-- పొటాష్ ఉపయోగించండి.
-- బూడిద ఉపయోగించండి.
+- నేలలో పొటాష్ (KCl) ఉపయోగించండి.
+- చెక్క బూడిదను ఉపయోగించండి.
+- నేలలో బాగా కలపండి.
+- వెంటనే నీరు పోయండి.
+- వేర్లకు తగలకుండా చూడండి.
+- అవసరమైతే మళ్లీ చేయండి.
+- అధిక వినియోగం నివారించండి.
 """
         }
     },
 
     "magnesium": {
         "symptoms": {
-            "en": "Yellowing between veins.",
-            "mr": "शिरांदरम्यान पिवळेपणा",
-            "te": "నరాల మధ్య పసుపు"
+            "en": "Yellowing between veins (interveinal chlorosis) in older leaves.",
+            "mr": "जुन्या पानांमध्ये शिरांदरम्यान पिवळेपणा",
+            "te": "పాత ఆకులలో నరాల మధ్య పసుపు రంగు మారడం"
         },
         "treatment": {
             "en": """### 🌿 Treatment Steps
-- Apply Epsom salt spray.
+- Apply magnesium sulfate (Epsom salt) as 1–2% foliar spray.
+- Mix 10–20 g per liter of water.
+- Spray evenly on both sides of leaves.
+- Apply during morning or evening.
+- Repeat every 10–15 days if needed.
+- Can also apply to soil around plant base.
+- Water after application.
+- Avoid overuse as it may affect calcium/potassium balance.
 """,
             "mr": """### 🌿 उपचार पायऱ्या
-- एप्सम सॉल्ट वापरा.
+- एप्सम सॉल्ट 1–2% फवारणी करा.
+- पाण्यात मिसळा.
+- पानांवर फवारणी करा.
+- सकाळी/संध्याकाळी वापरा.
+- 10–15 दिवसांनी पुन्हा करा.
+- मातीमध्येही वापरू शकता.
+- पाणी द्या.
+- अति वापर टाळा.
 """,
             "te": """### 🌿 చికిత్స దశలు
-- ఎప్సమ్ సాల్ట్ ఉపయోగించండి.
+- ఎప్సమ్ సాల్ట్ 1–2% స్ప్రే చేయండి.
+- నీటిలో కలపండి.
+- ఆకులపై స్ప్రే చేయండి.
+- ఉదయం/సాయంత్రం చేయండి.
+- 10–15 రోజులకు మళ్లీ చేయండి.
+- నేలలో కూడా ఉపయోగించవచ్చు.
+- నీరు పోయండి.
+- అధిక వినియోగం నివారించండి.
 """
         }
     },
 
     "healthy": {
         "symptoms": {
-            "en": "Healthy leaves.",
-            "mr": "निरोगी पाने",
-            "te": "ఆరోగ్యకరమైన ఆకులు"
+            "en": "Leaves are green, well-developed, and free from any deficiency symptoms.",
+            "mr": "पाने हिरवी, निरोगी आणि कोणतीही कमतरता नाही",
+            "te": "ఆకులు పచ్చగా, ఆరోగ్యంగా ఉన్నాయి, ఎలాంటి లోపాలు లేవు"
         },
         "treatment": {
-            "en": "No treatment needed.",
-            "mr": "उपचार गरज नाही.",
-            "te": "చికిత్స అవసరం లేదు."
+            "en": """### 🌿 Plant Status: Healthy
+- No treatment required.
+- Maintain regular watering.
+- Ensure proper sunlight exposure.
+- Apply balanced fertilizers periodically.
+- Monitor plant health regularly.
+- Keep surroundings clean to prevent pests.
+""",
+            "mr": """### 🌿 वनस्पती स्थिती: निरोगी
+- कोणतीही उपचार गरज नाही.
+- नियमित पाणी द्या.
+- सूर्यप्रकाश द्या.
+- संतुलित खत वापरा.
+- नियमित निरीक्षण करा.
+- परिसर स्वच्छ ठेवा.
+""",
+            "te": """### 🌿 మొక్క స్థితి: ఆరోగ్యకరం
+- చికిత్స అవసరం లేదు.
+- క్రమంగా నీరు ఇవ్వండి.
+- సూర్యకాంతి ఇవ్వండి.
+- సమతుల ఎరువులు ఉపయోగించండి.
+- పరిశీలించండి.
+- పరిసరాలను శుభ్రంగా ఉంచండి.
+"""
         }
     }
 }
