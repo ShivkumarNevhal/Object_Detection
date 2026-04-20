@@ -1,8 +1,10 @@
+import numpy as np
+import cv2
+print("NumPy version:", np.__version__)
+print("CV2 loaded successfully")
 import streamlit as st
 from ultralytics import YOLO
 from PIL import Image
-import numpy as np
-import cv2
 
 # -------------------------------
 # Page Config
